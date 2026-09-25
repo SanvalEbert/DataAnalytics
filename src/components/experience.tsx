@@ -2,12 +2,16 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
+  ALargeSmall,
   ArrowDown,
   ArrowRight,
+  ArrowUp,
+  Contrast,
   Expand,
   GraduationCap,
   Menu,
   MousePointer2,
+  Share2,
   Sparkles,
   X,
 } from "lucide-react";
@@ -36,6 +40,11 @@ export default function Experience() {
   const reducedMotion = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false);
   const [presenting, setPresenting] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState("inicio");
+  const [largeText, setLargeText] = useState(false);
+  const [highContrast, setHighContrast] = useState(false);
+  const [shareStatus, setShareStatus] = useState("");
 
   const sectionIds = useMemo(() => chapters.map((item) => item.id), []);
 
@@ -62,12 +71,79 @@ export default function Experience() {
     return () => window.removeEventListener("keydown", onKey);
   }, [presenting, sectionIds]);
 
+  useEffect(() => {
+    const updateScrollState = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const nextProgress = max > 0 ? (window.scrollY / max) * 100 : 0;
+      setScrollProgress(Math.min(100, Math.max(0, nextProgress)));
+
+      let current = sectionIds[0];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 0.36) current = id;
+      }
+      setActiveSection(current);
+    };
+
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+    return () => {
+      window.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, [sectionIds]);
+
+  const goToSection = (direction: 1 | -1) => {
+    const currentIndex = Math.max(0, sectionIds.indexOf(activeSection));
+    const targetIndex = Math.min(sectionIds.length - 1, Math.max(0, currentIndex + direction));
+    document.getElementById(sectionIds[targetIndex])?.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
+  const sharePage = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Data Science & Analytics",
+          text: "Dos dados à transformação",
+          url: window.location.href,
+        });
+        setShareStatus("Compartilhado");
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        setShareStatus("Link copiado");
+      }
+    } catch {
+      setShareStatus("");
+      return;
+    }
+    window.setTimeout(() => setShareStatus(""), 1800);
+  };
+
+  const activeChapterIndex = Math.max(0, chapters.findIndex((chapter) => chapter.id === activeSection));
+  const activeChapter = chapters[activeChapterIndex] ?? chapters[0];
+
   const reveal = reducedMotion
     ? {}
     : { initial: { opacity: 0, y: 28 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.2 } };
 
   return (
-    <main className={presenting ? "presentation-mode" : ""}>
+    <main
+      className={[
+        presenting ? "presentation-mode" : "",
+        largeText ? "large-text" : "",
+        highContrast ? "high-contrast" : "",
+      ].filter(Boolean).join(" ")}
+    >
+      <div className="scroll-progress" aria-hidden="true">
+        <span style={{ width: `${scrollProgress}%` }} />
+      </div>
       <header className="topbar">
         <a className="brand" href="#inicio" aria-label="Ir ao início">
           <span className="brand-mark">DA</span>
@@ -75,7 +151,14 @@ export default function Experience() {
         </a>
         <nav className="desktop-nav" aria-label="Navegação principal">
           {chapters.slice(1).map((chapter) => (
-            <a href={`#${chapter.id}`} key={chapter.id}>{chapter.label}</a>
+            <a
+              href={`#${chapter.id}`}
+              key={chapter.id}
+              className={activeSection === chapter.id ? "active" : ""}
+              aria-current={activeSection === chapter.id ? "true" : undefined}
+            >
+              {chapter.label}
+            </a>
           ))}
         </nav>
         <div className="top-actions">
@@ -282,6 +365,75 @@ export default function Experience() {
           <p>Data Science & Analytics · sua jornada começa aqui.</p>
         </motion.div>
       </section>
+
+      <div className="section-status" aria-live="polite">
+        <span>{String(activeChapterIndex + 1).padStart(2, "0")}/{String(chapters.length).padStart(2, "0")}</span>
+        <strong>{activeChapter.label}</strong>
+      </div>
+
+      <div className="floating-dock" aria-label="Controles rápidos">
+        <button
+          type="button"
+          className="dock-button"
+          data-label="Voltar ao topo"
+          aria-label="Voltar ao topo"
+          onClick={() => document.getElementById("inicio")?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" })}
+        >
+          <ArrowUp size={19} />
+        </button>
+        <button
+          type="button"
+          className="dock-button"
+          data-label="Próxima seção"
+          aria-label="Ir para a próxima seção"
+          onClick={() => goToSection(1)}
+        >
+          <ArrowDown size={19} />
+        </button>
+        <button
+          type="button"
+          className={`dock-button ${largeText ? "is-active" : ""}`}
+          data-label="Aumentar texto"
+          aria-label="Alternar texto ampliado"
+          aria-pressed={largeText}
+          onClick={() => setLargeText((value) => !value)}
+        >
+          <ALargeSmall size={19} />
+        </button>
+        <button
+          type="button"
+          className={`dock-button ${highContrast ? "is-active" : ""}`}
+          data-label="Alto contraste"
+          aria-label="Alternar alto contraste"
+          aria-pressed={highContrast}
+          onClick={() => setHighContrast((value) => !value)}
+        >
+          <Contrast size={19} />
+        </button>
+        <button
+          type="button"
+          className="dock-button"
+          data-label="Compartilhar"
+          aria-label="Compartilhar esta aula"
+          onClick={sharePage}
+        >
+          <Share2 size={18} />
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {shareStatus ? (
+          <motion.div
+            className="share-toast"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            role="status"
+          >
+            {shareStatus}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <footer>
         <div className="institution-brand">
