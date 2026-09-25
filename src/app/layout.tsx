@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
@@ -14,7 +15,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.variable} ${space.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${space.variable}`}>
+        {children}
+        <Script src="https://vlibras.gov.br/app/vlibras-plugin.js" strategy="afterInteractive" />
+      </body>
     </html>
   );
 }
