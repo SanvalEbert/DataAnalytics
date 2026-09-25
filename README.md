@@ -50,3 +50,8 @@ Use o botão **Apresentar** no topo. Durante a apresentação:
 5. Aplicações
 6. Carreiras
 7. Provocação final
+
+
+## Publicação
+
+O projeto está configurado para publicação automática no GitHub Pages por GitHub Actions.
