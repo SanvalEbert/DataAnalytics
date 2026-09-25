@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { applications, careers, chapters, ecosystem, maturity, pipeline } from "@/data/content";
+import { applications, careers, cases, chapters, ecosystem, learningPlatforms, maturity, pipeline, university } from "@/data/content";
 
 function SectionTitle({
   eyebrow,
@@ -194,8 +194,72 @@ export default function Experience() {
         </div>
       </section>
 
+      <section id="casos" className="section-shell">
+        <SectionTitle
+          eyebrow="05 · Quem já faz isso em escala"
+          title="Big techs transformam dados em produtos, decisões e experiências"
+          text="Os exemplos abaixo conectam o pipeline da aula a iniciativas reais: dados em tempo real, plataformas analíticas, inteligência artificial e agentes."
+        />
+        <div className="cases-grid">
+          {cases.map((item) => (
+            <motion.a
+              className="case-card"
+              key={item.provider}
+              href={item.url}
+              target="_blank"
+              rel="noreferrer"
+              {...reveal}
+            >
+              <div className="case-brand-row">
+                <span className={`provider provider-${item.provider.toLowerCase()}`}>{item.provider}</span>
+                <ArrowRight size={18} />
+              </div>
+              <small>{item.metric}</small>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <div className="chips">{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+            </motion.a>
+          ))}
+        </div>
+      </section>
+
+      <section id="aprendizagem" className="section-shell learning-section">
+        <SectionTitle
+          eyebrow="06 · Continue aprendendo"
+          title="Conecte a pós-graduação aos ecossistemas oficiais de aprendizagem"
+          text="Use estas plataformas para aprofundar competências, praticar em laboratórios e construir uma trilha complementar de certificações e projetos."
+        />
+        <div className="learning-grid">
+          {learningPlatforms.map((item) => (
+            <motion.article className="learning-card" key={item.provider} {...reveal}>
+              <div className="learning-head">
+                <span className={`provider provider-${item.provider.toLowerCase()}`}>{item.provider}</span>
+                <GraduationCap size={21} />
+              </div>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <div className="learning-actions">
+                <a href={item.url} target="_blank" rel="noreferrer">
+                  Plataforma oficial <ArrowRight size={15} />
+                </a>
+                <a href={item.academicUrl} target="_blank" rel="noreferrer" className="secondary-link">
+                  {item.academic}
+                </a>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+        <div className="learning-callout">
+          <div>
+            <small>Da sala de aula para o ecossistema</small>
+            <strong>Aprenda → pratique → certifique → construa → compartilhe.</strong>
+          </div>
+          <p>O portfólio profissional começa quando o conhecimento passa a produzir evidências de aplicação.</p>
+        </div>
+      </section>
+
       <section id="carreiras" className="section-shell">
-        <SectionTitle eyebrow="05 · Onde você entra?" title="Uma pós-graduação, múltiplas trajetórias profissionais" text="O objetivo não é escolher uma caixa hoje, mas compreender o ecossistema para decidir onde gerar valor." />
+        <SectionTitle eyebrow="07 · Onde você entra?" title="Uma pós-graduação, múltiplas trajetórias profissionais" text="O objetivo não é escolher uma caixa hoje, mas compreender o ecossistema para decidir onde gerar valor." />
         <div className="career-map">
           {careers.map((item, index) => (
             <motion.article className="career-card" key={item.role} {...reveal}>
@@ -219,8 +283,11 @@ export default function Experience() {
       </section>
 
       <footer>
-        <span>Data Science & Analytics</span>
-        <span>Dos dados à transformação</span>
+        <div className="institution-brand">
+          <img src={university.logo} alt="Universidade SENAI CIMATEC" />
+          <span>{university.name}</span>
+        </div>
+        <span>Data Science & Analytics · Dos dados à transformação</span>
       </footer>
     </main>
   );
