@@ -67,11 +67,88 @@ export const applications = [
   { title: "Novos produtos", text: "Copilotos, agentes e experiências inteligentes.", icon: Bot },
 ];
 
+export const cases = [
+  {
+    provider: "AWS",
+    title: "NFL Next Gen Stats",
+    metric: "500M+ pontos de dados por temporada",
+    text: "A NFL usa dados, analytics e machine learning na AWS para transformar rastreamento em tempo real em estatísticas, predição e experiências para equipes e fãs.",
+    tags: ["dados em tempo real", "analytics", "machine learning"],
+    url: "https://aws.amazon.com/pt/sports/nfl/",
+  },
+  {
+    provider: "Microsoft",
+    title: "TeamDynamix + Azure",
+    metric: "até 70% menos carga de suporte",
+    text: "A TeamDynamix combinou dados, automação e IA no Azure para acelerar a resolução de solicitações e operar fluxos de atendimento conduzidos por agentes.",
+    tags: ["Azure", "automação", "agentes de IA"],
+    url: "https://www.microsoft.com/en/customers/story/26835-teamdynamix-azure",
+  },
+  {
+    provider: "Google",
+    title: "Sunrise + BigQuery",
+    metric: "carga noturna 25% mais rápida",
+    text: "A Sunrise consolidou dados empresariais no BigQuery para criar uma base governada para analytics, personalização e novas aplicações orientadas por IA.",
+    tags: ["BigQuery", "governança", "personalização"],
+    url: "https://cloud.google.com/customers/sunrise-data-transformation",
+  },
+  {
+    provider: "NVIDIA",
+    title: "AI Factory",
+    metric: "95%+ menos tempo no planejamento diário",
+    text: "A própria NVIDIA conectou sua base interna de conhecimento, infraestrutura acelerada e agentes de IA para escalar centenas de fluxos de trabalho empresariais.",
+    tags: ["RAG", "AI agents", "computação acelerada"],
+    url: "https://www.nvidia.com/en-us/case-studies/ai-factory-drives-enterprise-innovation-at-scale/",
+  },
+];
+
+export const learningPlatforms = [
+  {
+    provider: "Microsoft",
+    title: "Microsoft Learn",
+    text: "Roteiros, módulos e cursos para Data Analyst, Data Engineer, Data Scientist e AI Engineer.",
+    url: "https://learn.microsoft.com/pt-br/training/",
+    academic: "Microsoft Learn for Educators",
+    academicUrl: "https://learn.microsoft.com/pt-br/training/educator-center/programs/msle/",
+  },
+  {
+    provider: "AWS",
+    title: "AWS Skill Builder",
+    text: "Trilhas de cloud, data analytics e IA com conteúdo autoguiado, laboratórios e preparação para certificações.",
+    url: "https://aws.amazon.com/pt/training/digital/",
+    academic: "AWS Academy",
+    academicUrl: "https://aws.amazon.com/pt/training/awsacademy/",
+  },
+  {
+    provider: "Google",
+    title: "Google Skills",
+    text: "Treinamentos em Google Cloud, dados, IA generativa e certificações, com laboratórios práticos.",
+    url: "https://cloud.google.com/learn/training?hl=pt-BR",
+    academic: "Google Career Launchpad",
+    academicUrl: "https://cloud.google.com/edu/faculty/career-launchpad",
+  },
+  {
+    provider: "NVIDIA",
+    title: "NVIDIA DLI",
+    text: "Cursos e trilhas em deep learning, ciência de dados, IA generativa e computação acelerada.",
+    url: "https://www.nvidia.com/pt-br/training/",
+    academic: "Educator Programs / DLI Ambassador",
+    academicUrl: "https://www.nvidia.com/pt-br/training/educator-programs/",
+  },
+];
+
+export const university = {
+  name: "Universidade SENAI CIMATEC",
+  logo: "https://cpaia.senaicimatec.com.br/empresas/logo-cimatec.png",
+};
+
 export const chapters = [
   { id: "inicio", label: "Início", icon: Sparkles },
   { id: "pipeline", label: "Pipeline", icon: Workflow },
   { id: "maturidade", label: "Maturidade", icon: ChartNoAxesCombined },
   { id: "ecossistema", label: "Ecossistema", icon: Database },
   { id: "aplicacoes", label: "Aplicações", icon: BrainCircuit },
+  { id: "casos", label: "Casos", icon: Sparkles },
+  { id: "aprendizagem", label: "Aprender", icon: GraduationCap },
   { id: "carreiras", label: "Carreiras", icon: BriefcaseBusiness },
 ];
