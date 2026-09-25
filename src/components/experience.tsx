@@ -5,6 +5,7 @@ import {
   ArrowDown,
   ArrowRight,
   Expand,
+  GraduationCap,
   Menu,
   MousePointer2,
   Sparkles,
